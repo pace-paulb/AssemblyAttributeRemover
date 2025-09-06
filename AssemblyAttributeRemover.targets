@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+
+  <Target Name="RemoveAssemblyAttributes" 
+    AfterTargets="Build" 
+    DependsOnTargets="RemoveAssemblyAttribute" />
+
+  <Target 
+    Name="RemoveAssemblyAttribute" 
+    Condition=" '@(AssemblyAttributeRemover)' != '' "
+    Outputs="%(AssemblyAttributeRemover.Identity)">
+    <PropertyGroup>
+      <!-- e.g. Include="System.Data.SQLite.EF6,System.Security.AllowPartiallyTrustedCallersAttribute" -->
+      <AssemblyAndAttribute>%(AssemblyAttributeRemover.Identity)</AssemblyAndAttribute>
+      <AssemblyWithoutExtension>$(AssemblyAndAttribute.Split(',')[0])</AssemblyWithoutExtension>
+      <AssemblyAttributeFullName>$(AssemblyAndAttribute.Split(',')[1])</AssemblyAttributeFullName>
+    </PropertyGroup>
+
+    <Exec Command="&quot;$(MSBuildThisFileDirectory)..\tools\AssemblyAttributeRemover.exe&quot; &quot;$(TargetDir)$(AssemblyWithoutExtension).dll&quot; &quot;$(AssemblyAttributeFullName)&quot;" />
+  </Target>  
+
+</Project>

@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>AssemblyAttributeRemover</Title>
+    <Version>0.1.5</Version>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net8.0;net472</TargetFrameworks>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <LangVersion>10.0</LangVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishRelease>true</PublishRelease>
+    <PublishSelfContained>false</PublishSelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Paul B.</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <Description>
+      This nuget package automatically removes unwanted attributes from assemblies in your bin folder upon build.
+    </Description>
+    <PackageProjectUrl>https://github.com/pace-paulb/AssemblyAttributeRemover/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pace-paulb/AssemblyAttributeRemover/</RepositoryUrl>
+    <RepositoryBranch>main</RepositoryBranch>
+    <IsTool>true</IsTool>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="docs\README.md" Pack="true" PackagePath="\" />
+    <None Include="docs\LICENSE.txt" Pack="true" PackagePath="\" />
+    <None Include="AssemblyAttributeRemover.targets" Pack="true" PackagePath="\build\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Cecil" Version="0.11.6">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="_PackLocalLockFileAssemblies" AfterTargets="ResolveLockFileCopyLocalFiles">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths)" />
+    </ItemGroup>
+  </Target>
+  
+</Project>
